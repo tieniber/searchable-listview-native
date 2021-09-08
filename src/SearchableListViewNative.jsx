@@ -1,6 +1,6 @@
 /*global mx*/
-import { FlatList, View } from "react-native";
-import { createElement, useEffect, useRef } from "react";
+import { FlatList, RefreshControl, View } from "react-native";
+import { createElement, useEffect, useRef, useState } from "react";
 import { flattenStyles } from "./utils/common";
 const defaultStyle = {
     container: {},
@@ -14,7 +14,10 @@ export const SearchableListViewNative = ({
     constraints,
     emptyContent,
     loadingContent,
-    showProgressBar
+    showProgressBar,
+    action,
+    headerContent,
+    footerContent
 }) => {
     const pageSize = 500;
     const limit = useRef(pageSize);
@@ -22,6 +25,8 @@ export const SearchableListViewNative = ({
     useEffect(() => {
         datasource.setLimit(limit.current);
     }, []);
+    const [refreshing, setRefreshing] = useState(false);
+
     if (showProgressBar) {
         useEffect(() => {
             if (datasource.status !== "available" && pid.current == null) {
@@ -65,6 +70,14 @@ export const SearchableListViewNative = ({
         return [];
     };
 
+    const onRefresh = () => {
+        setRefreshing(true);
+        if (action) {
+            action.execute();
+        }
+        setRefreshing(false);
+    };
+
     if (datasource.status !== "available") {
         return <View>{loadingContent}</View>;
     } else {
@@ -77,6 +90,11 @@ export const SearchableListViewNative = ({
                     keyExtractor={item => item.id}
                     onEndReachedThreshold={0.5}
                     onEndReached={() => loadNextPage()}
+                    refreshControl={
+                        <RefreshControl style={styles.refreshControl} refreshing={refreshing} onRefresh={onRefresh} />
+                    }
+                    ListHeaderComponent={headerContent ? <View>{headerContent}</View> : null}
+                    ListFooterComponent={footerContent ? <View>{footerContent}</View> : null}
                 />
             </View>
         ) : (

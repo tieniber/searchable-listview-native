@@ -19,29 +19,33 @@
                 <caption>Data Source</caption>
                 <description />
             </property>
+            <property key="headerContent" type="widgets" required="false">
+                <caption>Header Content</caption>
+                <description />
+            </property>            
             <property key="content" type="widgets" required="true" dataSource="datasource">
                 <caption>Content</caption>
                 <description />
             </property>
             <property key="constraints" type="object" isList="true" required="true">
-              <caption>Constraints</caption>
-              <description>All constraints are additive. (They're AND'ed)</description>
-              <properties>
-              <propertyGroup caption="Filter">
-                <property
+                <caption>Constraints</caption>
+                <description>All constraints are additive. (They're AND'ed)</description>
+                <properties>
+                    <propertyGroup caption="Filter">
+                        <property
                             key="expression"
                             type="expression"
                             defaultValue=""
                             required="false"
                             dataSource="../datasource"
                         >
-                  <caption>Constraint Expression</caption>
-                  <description
+                            <caption>Constraint Expression</caption>
+                            <description
                             >When the expression returns true, this record will be included in the result set.</description>
-                  <returnType type="Boolean" />
-                </property>
-              </propertyGroup>
-              </properties>
+                            <returnType type="Boolean" />
+                        </property>
+                    </propertyGroup>
+                </properties>
             </property>
             <property key="loadingContent" type="widgets" required="false">
                 <caption>Loading Message</caption>
@@ -51,10 +55,20 @@
                 <caption>Empty Message</caption>
                 <description />
             </property>
+            <property key="footerContent" type="widgets" required="false">
+                <caption>Footer Content</caption>
+                <description />
+            </property>
+        </propertyGroup>
+        <propertyGroup caption="Behavior">
             <property key="showProgressBar" type="boolean" defaultValue="true">
                 <caption>Show Progress</caption>
                 <description>Show a progress bar while loading</description>
-            </property>            
+            </property>        
+            <property key="action" type="action" required="true">
+                <caption>Pull down action</caption>
+                <description></description>
+            </property>
         </propertyGroup>
     </properties>
 </widget>
